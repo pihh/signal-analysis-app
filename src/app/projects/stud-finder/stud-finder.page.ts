@@ -28,6 +28,9 @@ export class StudFinderPage implements AfterViewInit {
   async ngAfterViewInit() {
     await this.startCamera();
     this.setupOverlayCanvas();
+    let readings =  await this.sensorData.getAllReadings()
+    this.labelCounts.stud = readings.filter((reading)=>reading.label == "stud").length
+    this.labelCounts.empty = readings.filter((reading)=>reading.label == "empty").length
   }
 
   currentLabel: 'stud' | 'empty' = 'empty';
@@ -54,6 +57,7 @@ export class StudFinderPage implements AfterViewInit {
   stopScan() {
     clearInterval(this.scanInterval);
     this.signalService.stop();
+    this.scanInterval = null
   }
 
   isLikelyStud(data: any): boolean {
@@ -104,6 +108,8 @@ export class StudFinderPage implements AfterViewInit {
 
   async startCamera() {
     try {
+  
+
       const stream = await navigator.mediaDevices.getUserMedia({
         video: {
           facingMode: 'environment',
