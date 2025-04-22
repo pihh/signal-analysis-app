@@ -28,7 +28,7 @@ export class StudFinderPage implements AfterViewInit {
   async ngAfterViewInit() {
     await this.startCamera();
     this.setupOverlayCanvas();
-    let readings =  await this.sensorData.getAllReadings()
+    let readings =  await this.sensorStorage.getAllReadings()
     this.labelCounts.stud = readings.filter((reading)=>reading.label == "stud").length
     this.labelCounts.empty = readings.filter((reading)=>reading.label == "empty").length
   }
@@ -250,7 +250,7 @@ export class StudFinderPage implements AfterViewInit {
     const earlyStopping = tf.callbacks.earlyStopping({
       monitor: 'val_loss',
       patience: 5,
-      restoreBestWeights: true
+      restoreBestWeights: false
     });
 
     // Training the model and capturing history
