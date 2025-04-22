@@ -1,0 +1,38 @@
+
+
+<ion-header [translucent]="true">
+  <ion-toolbar color="light">
+    <ion-title>{{title}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="light" [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar color="light">
+      <ion-title size="large">{{title}}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-segment-view>
+    <ion-segment-content id="first"><ng-content select="[page-classify]"></ng-content></ion-segment-content>
+    <ion-segment-content id="second"><ng-content select="[page-train]"></ng-content></ion-segment-content>
+    <ion-segment-content id="third"><ng-content select="[page-predict]"></ng-content></ion-segment-content>
+  </ion-segment-view>
+  <div class="footer-space">
+    
+  </div>
+</ion-content>
+<ion-footer>
+  <ion-toolbar >
+    <ion-segment mode="md">
+      <ion-segment-button value="first" content-id="first">
+        <ion-label>Classify</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="second" content-id="second">
+        <ion-label>Train</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="third" content-id="third">
+        <ion-label>Predict</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-footer> 

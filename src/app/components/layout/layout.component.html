@@ -1,0 +1,14 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="light">
+    <ion-title>{{title}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="light" [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar color="light">
+      <ion-title size="large">{{title}}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ng-content></ng-content>
+</ion-content>

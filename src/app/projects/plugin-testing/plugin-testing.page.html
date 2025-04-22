@@ -1,0 +1,88 @@
+<!-- <app-layout-ml title="Plugin Tests"> 
+
+    <div page-classify><p>ccccccccc</p></div>
+    <div page-train>train</div>
+    <div page-predict>pred</div>
+</app-layout-ml> -->
+
+<!-- startScan(): Promise<void>;
+    stopScan(): Promise<void>;
+    getWifiNetworks(): Promise<{ networks: WifiNetwork[] }>;
+    getBluetoothDevices(): Promise<{ devices: BluetoothDevice[] }>; -->
+
+<app-layout title="Plugin Tests">
+  <!-- <app-list title="Wifi">
+    <app-list-item (onClickItem)="getWifiNetworks()">
+      <h3>Get wifi networks</h3>
+      <p>getWifiNetworks</p>
+    </app-list-item>
+    @for(network of networks; track network.bssid){
+    <app-list-item>
+      <h3>{{network.ssid}}</h3>
+      <ul>
+        <li>Level: {{network.level}}</li>
+        <li>Frequency: {{network.level}}</li>
+        <li>BSSID: {{network.bssid}}</li>
+        <li>Capabilities: {{network.capabilities}}</li>
+      </ul>
+    </app-list-item>
+    }
+  </app-list>
+  <app-list title="Bluetooth">
+    <app-list-item (onClickItem)="getBluetoothDevices()">
+      <h3>Get bluetooth devices</h3>
+      <p>getBluetoothDevices</p>
+    </app-list-item>
+
+    @for(device of devices; track device.address){
+    <app-list-item>
+      <h3>{{device.name}}</h3>
+      <ul>
+        <li>Address: {{device.address}}</li>
+        <li>RSSI: {{device.rssi}}</li>
+        <li>UUIDS: {{device.uuids}}</li>
+        <li>Tx Powe: {{device.txPower}}</li>
+      </ul>
+    </app-list-item>
+    }
+  </app-list> -->
+
+  <app-list title="Wifi & Bluetooth">
+    <app-list-item (onClickItem)="toggleScan()">
+      <h3>{{isScanning ? 'Stop': 'Start'}} scanning both Wifi and Bluetooth</h3>
+      <p>{{isScanning ? 'stop': 'start'}}Scan</p>
+    </app-list-item>
+  </app-list>
+<app-list title="bluetooth">
+  <app-list-item>
+    @for(bluetoothChart of bluetoothCharts; track bluetoothChart; let i = $index){
+
+      <app-charts type="bluetooth" [elementId]="'bluetooth-'+i" [data]="bluetoothChart">
+        
+      </app-charts>
+    }
+  </app-list-item>
+</app-list>
+  <!-- @for(eventName of ['wifiScanResult','bluetoothScanResult','cellSignalResult','sensorData']; track eventName){ 
+   
+    <app-list [title]="eventName">
+      <!--@for(result of scanResult[eventName]; track result){
+        <app-list-item>
+          <!--<h3>{{device.name}}</h3>
+          <ul>
+            <li>Address: {{device.address}}</li>
+            <li>RSSI: {{device.rssi}}</li>
+            <li>UUIDS: {{device.uuids}}</li>
+            <li>Tx Powe: {{device.txPower}}</li>
+          </ul>
+        --
+          <pre>{{parseResult(result)}}</pre>
+        </app-list-item>
+      }
+      
+    </app-list>
+    -->
+  
+
+
+</app-layout>

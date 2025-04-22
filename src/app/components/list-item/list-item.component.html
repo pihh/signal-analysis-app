@@ -1,0 +1,14 @@
+<ion-item-sliding>
+  <ion-item lines="none" (click)="clickItem()">
+    <ion-label><ng-content></ng-content></ion-label>
+  </ion-item>
+
+  @if(options && options.length>0){
+    <ion-item-options *ngIf="options && options.length > 0">
+      <!-- <ion-item-option >Favorite</ion-item-option> -->
+      @for(option of options; track option.label; let i = $index) {
+        <ion-item-option [color]="option.color" (click)="selectOption(option)">{{option.label}}</ion-item-option>
+      }
+    </ion-item-options>
+  }
+</ion-item-sliding>

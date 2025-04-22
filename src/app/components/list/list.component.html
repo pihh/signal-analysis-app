@@ -1,0 +1,6 @@
+<ion-list [inset]="true">
+  <ion-list-header *ngIf="title">
+    <ion-label>{{title}}</ion-label>
+  </ion-list-header>
+  <ng-content></ng-content>
+</ion-list>

@@ -1,0 +1,14 @@
+app-layout-ml {
+    height: calc(100vh - 96px);
+
+    ion-footer, ion-footer ion-toolbar{
+        --border-color:transparent;
+       
+            --background: white;
+       
+    }
+}
+
+.footer-space{
+    height: 96px;
+}
