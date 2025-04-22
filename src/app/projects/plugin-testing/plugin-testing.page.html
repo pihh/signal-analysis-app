@@ -53,36 +53,41 @@
       <p>{{isScanning ? 'stop': 'start'}}Scan</p>
     </app-list-item>
   </app-list>
-<app-list title="bluetooth">
-  <app-list-item>
-    @for(bluetoothChart of bluetoothCharts; track bluetoothChart; let i = $index){
+  <app-list title="bluetooth">
+    <app-list-item>
+      @for(bluetoothChart of bluetoothCharts; track bluetoothChart; let i =
+      $index){
 
-      <app-charts type="bluetooth" [elementId]="'bluetooth-'+i" [data]="bluetoothChart">
-        
+      <app-charts
+        type="bluetooth"
+        [elementId]="'bluetooth-'+i"
+        [data]="bluetoothChart"
+        [title]="bluetoothChartNames[i]"
+      >
       </app-charts>
-    }
-  </app-list-item>
-</app-list>
-  <!-- @for(eventName of ['wifiScanResult','bluetoothScanResult','cellSignalResult','sensorData']; track eventName){ 
-   
-    <app-list [title]="eventName">
-      <!--@for(result of scanResult[eventName]; track result){
+      }
+    </app-list-item>
+  </app-list>
+  @for(eventName of
+  ['wifiScanResult','bluetoothScanResult','cellSignalResult','sensorData'];
+  track eventName){
+  
+      <app-list [title]="eventName">
+        @for(result of scanResult[eventName]; track result){
         <app-list-item>
-          <!--<h3>{{device.name}}</h3>
-          <ul>
-            <li>Address: {{device.address}}</li>
-            <li>RSSI: {{device.rssi}}</li>
-            <li>UUIDS: {{device.uuids}}</li>
-            <li>Tx Powe: {{device.txPower}}</li>
-          </ul>
-        --
+          <!--
+            <h3>{{device.name}}</h3>
+            <ul>
+              <li>Address: {{device.address}}</li>
+              <li>RSSI: {{device.rssi}}</li>
+              <li>UUIDS: {{device.uuids}}</li>
+              <li>Tx Powe: {{device.txPower}}</li>
+            </ul>
+          -->
           <pre>{{parseResult(result)}}</pre>
         </app-list-item>
-      }
-      
-    </app-list>
-    -->
-  
+        }
+      </app-list>
 
-
+  }
 </app-layout>

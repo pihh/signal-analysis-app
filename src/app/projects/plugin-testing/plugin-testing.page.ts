@@ -83,6 +83,7 @@ export class PluginTestingPage implements OnInit, OnDestroy {
   }
 
   bluetoothCharts:any[] = [];
+  bluetoothChartNames:any[] = []
   async toggleScan() {
     this.isScanning = !this.isScanning;
     if (!this.isScanning) {
@@ -96,7 +97,8 @@ export class PluginTestingPage implements OnInit, OnDestroy {
         }
         bluetoothMap[result.address].push(result)
       }
-      this.bluetoothCharts = Object.values(bluetoothMap)
+      this.bluetoothCharts = [...Object.values(bluetoothMap)]
+      this.bluetoothChartNames= [...Object.keys(bluetoothMap)]
       return res;
     } else {
       this.initListeners()
