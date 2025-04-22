@@ -1,0 +1,93 @@
+.camera-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+
+  .camera-feed {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+  }
+
+  .overlay-canvas {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .debug-panel {
+    position: absolute;
+    bottom: 54px;
+    left: 16px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    z-index: 3;
+    font-size: 14px;
+  }
+}
+
+.stud-finder-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: -webkit-fill-available;
+  height: auto;
+}
+
+.label-toggle {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+}
+
+.label-counter {
+  position: absolute;
+  bottom: 96px;
+  left: 82px;
+  transform: translateX(-50%);
+  z-index: 3;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+.reset-button {
+    position: absolute;
+    top: 110px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+  }
+
+  .train-status{
+    position: fixed;
+    bottom: 8em;
+    z-index: 100;
+    left: 1em;
+  }
+
+  .segment-container{
+    position: absolute;
+    bottom: 0em;
+    z-index: 10000;
+    height: 56px;
+    width: 100vw;
+  }
+
+  ion-fab{
+    transform: translateY(-3em);
+  }
+
+  ion-segment-button:not(.segment-button-checked){
+    background: rgba(255, 255, 255, 0.2)
+  }

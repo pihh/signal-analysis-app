@@ -84,6 +84,7 @@ export class PluginTestingPage implements OnInit, OnDestroy {
 
   bluetoothCharts:any[] = [];
   bluetoothChartNames:any[] = []
+  lightChart:any[] = [];
   async toggleScan() {
     this.isScanning = !this.isScanning;
     if (!this.isScanning) {
@@ -99,6 +100,7 @@ export class PluginTestingPage implements OnInit, OnDestroy {
       }
       this.bluetoothCharts = [...Object.values(bluetoothMap)]
       this.bluetoothChartNames= [...Object.keys(bluetoothMap)]
+      this.lightChart = this.scanResult.sensorData.filter((d:any)=>d.type =="light")
       return res;
     } else {
       this.initListeners()

@@ -68,6 +68,20 @@
       }
     </app-list-item>
   </app-list>
+
+  <app-list title="light">
+    <app-list-item>
+     
+      <app-charts
+        type="light"
+        [elementId]="'light'"
+        [data]="lightChart"
+        [title]="'Light'"
+      >
+      </app-charts>
+      
+    </app-list-item>
+  </app-list>
   @for(eventName of
   ['wifiScanResult','bluetoothScanResult','cellSignalResult','sensorData'];
   track eventName){

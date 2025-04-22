@@ -14,6 +14,11 @@ export class AppComponent implements OnInit{
       icon: 'add',
     },
     {
+      title: 'Stud Finder',
+      url: '/stud-finder',
+      icon: 'add',
+    },
+    {
       title: 'About',
       url: '/about',
       icon: 'information-circle',

@@ -10,8 +10,8 @@ export interface BluetoothChartSetup {
 }
 
 export const chartMap: any = {
-  bluetooth: (data: BluetoothChartData[] = [],elementId="bluetooth") => {
-    const x = data.map((d: any) => d.timestamp);
+  bluetooth: (data: any[] = [],elementId="bluetooth", title?:string) => {
+    const x = data.map((d: any, i:number) => i);
     const rssi = data.map((d: any) => d.rssi);
     Plotly.newPlot(
      elementId,
@@ -25,12 +25,12 @@ export const chartMap: any = {
         },
       ],
       {
-        title: 'Bluetooth RSSI Signal',
+        title: title || 'Bluetooth RSSI Signal',
       }
     );
   },
-  wifi: (data: BluetoothChartData[] = [],elementId="chart") => {
-    const x = data.map((d: any) => d.timestamp);
+  wifi: (data: any[] = [],elementId="chart",title?:string) => {
+    const x =  data.map((d: any, i:number) => i);
     const y = data.map((d: any) => d.level);
     Plotly.newPlot(
       elementId,
@@ -44,12 +44,12 @@ export const chartMap: any = {
         },
       ],
       {
-        title: 'Bluetooth RSSI Signal',
+        title: title || 'Bluetooth RSSI Signal',
       }
     );
   },
-  light: (data: BluetoothChartData[] = [],elementId="chart") => {
-    const x = data.map((d: any) => d.timestamp);
+  light: (data: any[] = [],elementId="chart") => {
+    const x =  data.map((d: any, i:number) => i);
     const y = data.map((d: any) => d.value);
     Plotly.newPlot(
       elementId,
@@ -67,8 +67,8 @@ export const chartMap: any = {
       }
     );
   },
-  accelerometer: (data: BluetoothChartData[] = [],elementId="chart") => {
-    const x = data.map((d: any) => d.timestamp);
+  accelerometer: (data: any[] = [],elementId="chart") => {
+    const x =  data.map((d: any, i:number) => i);
     const y = data.map((d: any) => [d.x,d.y,d.z]);
     Plotly.newPlot(
       elementId,
@@ -86,8 +86,8 @@ export const chartMap: any = {
       }
     );
   },
-  magnetometer: (data: BluetoothChartData[] = [],elementId="chart") => {
-    const x = data.map((d: any) => d.timestamp);
+  magnetometer: (data: any[] = [],elementId="chart") => {
+    const x =  data.map((d: any, i:number) => i);
     const y = data.map((d: any) => [d.x,d.y,d.z]);
     Plotly.newPlot(
       elementId,

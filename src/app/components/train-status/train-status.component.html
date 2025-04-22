@@ -1,0 +1,20 @@
+<ion-button *ngIf="!trainingInProgress" (click)="trainModel()" size="small">Start Training</ion-button>
+  
+  <div *ngIf="trainingInProgress">
+    <p>{{ trainingStatus }}</p>
+
+    <ion-progress-bar 
+      *ngIf="trainingAccuracy.length > 0"
+      value="{{ trainingAccuracy[trainingAccuracy.length - 1] }}" 
+      color="success">
+    </ion-progress-bar>
+
+    <div *ngIf="trainingAccuracy.length > 0">
+      <h3>Epoch {{ trainingAccuracy.length }}: Accuracy = {{ trainingAccuracy[trainingAccuracy.length - 1] * 100 }}%</h3>
+      <h4>Loss: {{ trainingLoss[trainingLoss.length - 1] }}</h4>
+      <h4>Validation Accuracy: {{ validationAccuracy[validationAccuracy.length - 1] * 100 }}%</h4>
+      <h4>Validation Loss: {{ validationLoss[validationLoss.length - 1] }}</h4>
+    </div>
+  </div>
+
+  <ion-button *ngIf="trainingInProgress" (click)="cancelTraining()" size="small">Cancel Training</ion-button>

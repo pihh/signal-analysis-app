@@ -7,13 +7,17 @@ import { ListItemComponent } from './list-item/list-item.component';
 import { LayoutMlComponent } from './layout-ml/layout-ml.component';
 import { LayoutComponent } from './layout/layout.component';
 import { ChartsComponent } from './charts/charts.component';
+import { LiveCameraComponent } from './live-camera/live-camera.component';
+import { TrainStatusComponent } from './train-status/train-status.component';
 
 const components = [
   ListComponent,
   ListItemComponent,
   LayoutMlComponent,
   LayoutComponent,
-  ChartsComponent
+  ChartsComponent,
+  LiveCameraComponent,
+  TrainStatusComponent
 ];
 @NgModule({
   declarations: components,

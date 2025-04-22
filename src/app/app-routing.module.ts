@@ -17,6 +17,10 @@ const routes: Routes = [
   {
     path: 'about',
     loadChildren: () => import('./pages/about/about.module').then( m => m.AboutPageModule)
+  },
+  {
+    path: 'stud-finder',
+    loadChildren: () => import('./projects/stud-finder/stud-finder.module').then( m => m.StudFinderPageModule)
   }
 ];
 @NgModule({
