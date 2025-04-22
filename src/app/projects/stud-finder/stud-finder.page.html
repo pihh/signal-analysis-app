@@ -49,15 +49,15 @@
   </div>
 
   <ion-fab slot="fixed" horizontal="end" vertical="bottom" size="small">
-    <ion-fab-button>
+    <ion-fab-button size="small">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
     <ion-fab-list side="top">
-      <ion-fab-button (click)="startScan()" *ngIf="!scanInterval">
+      <ion-fab-button (click)="startScan()" *ngIf="!isScanning">
         Start
         <!-- <ion-icon name="chevron-up"></ion-icon> -->
       </ion-fab-button>
-      <ion-fab-button (click)="stopScan()" *ngIf="scanInterval">
+      <ion-fab-button (click)="stopScan()" *ngIf="isScanning">
         Stop
         <!-- <ion-icon name="chevron-up"></ion-icon> -->
       </ion-fab-button>

@@ -28,9 +28,13 @@ export class StudFinderPage implements AfterViewInit {
   async ngAfterViewInit() {
     await this.startCamera();
     this.setupOverlayCanvas();
-    let readings =  await this.sensorStorage.getAllReadings()
-    this.labelCounts.stud = readings.filter((reading)=>reading.label == "stud").length
-    this.labelCounts.empty = readings.filter((reading)=>reading.label == "empty").length
+    let readings = await this.sensorStorage.getAllReadings();
+    this.labelCounts.stud = readings.filter(
+      (reading) => reading.label == 'stud'
+    ).length;
+    this.labelCounts.empty = readings.filter(
+      (reading) => reading.label == 'empty'
+    ).length;
   }
 
   currentLabel: 'stud' | 'empty' = 'empty';
@@ -43,52 +47,59 @@ export class StudFinderPage implements AfterViewInit {
     this.labelCounts = { stud: 0, empty: 0 };
   }
 
-  scanInterval: any;
+  isScanning: any;
   private sensorData: any = [];
   private scanFrequency: any = 100;
   async startScan() {
-    this.signalService.scanCurrentWifi();
-    this.signalService.startMagnetometer();
-    this.scanInterval = setInterval(() => {
-      this.logData();
-    }, this.scanFrequency);
+    await this.signalService.start();
+    this.isScanning = true
+    this.signalService.startStudFinder(async (data: any = {}) => {
+      const label = this.currentLabel;
+      const dataPoint = {
+        magnetometer: data.magnetometer,
+        rssi: data.wifi.level,
+        wifiFrequency: data.wifi.frequency,
+        position: data.accelerometer.position,
+        accelerometer: data.accelerometer,
+        label: label,
+        timestamp: Date.now(),
+      };
+
+      console.log('did check something');
+      // Guardar e apagar leitores
+
+      this.sensorData.push(dataPoint);
+      this.signalService.lastReadings.magnetometer = null;
+
+      await this.sensorStorage.saveReading(dataPoint);
+      // Update label count
+      this.labelCounts[label]++;
+      this.drawHeatmapPoint(dataPoint); // optional
+    });
+
+    // this.scanInterval = setInterval(() => {
+    //   this.logData();
+    // }, this.scanFrequency);
   }
 
   stopScan() {
-    clearInterval(this.scanInterval);
+    // clearInterval(this.scanInterval);
     this.signalService.stop();
-    this.scanInterval = null
+    this.isScanning = null;
   }
 
   isLikelyStud(data: any): boolean {
     const magZ = Math.abs(data.magnetometer.z);
     const rssi = data.rssi;
-  
+
     // Customize thresholds based on tests
     const magThreshold = 70;
     const rssiDrop = rssi !== null && rssi < -70;
-  
+
     return magZ > magThreshold || rssiDrop;
   }
 
-  private async logData() {
-    const label = this.currentLabel;
-    const dataPoint = {
-      magnetometer: this.signalService.lastReadings.magnetometer,
-      rssi: this.signalService.lastReadings.wifi.level,
-      position: this.signalService.lastReadings.accelerometer.position,
-      accelerometer: this.signalService.lastReadings.accelerometer,
-      label: label,
-      timestamp: Date.now(),
-    };
-
-    this.sensorData.push(dataPoint);
-
-    await this.sensorStorage.saveReading(dataPoint);
-    // Update label count
-    this.labelCounts[label]++;
-    this.drawHeatmapPoint(dataPoint); // optional
-  }
+  private async logData() {}
 
   async exportReadings() {
     const readings = await this.sensorStorage.getAllReadings();
@@ -108,8 +119,6 @@ export class StudFinderPage implements AfterViewInit {
 
   async startCamera() {
     try {
-  
-
       const stream = await navigator.mediaDevices.getUserMedia({
         video: {
           facingMode: 'environment',
@@ -157,26 +166,26 @@ export class StudFinderPage implements AfterViewInit {
     const canvas = this.overlay.nativeElement;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-  
-    const model = await this.loadModel();  // Load the model once
-  
+
+    const model = await this.loadModel(); // Load the model once
+
     // Make prediction for the current data
     const isStud = await this.predictStud(data, model);
-  
-    const x = canvas.width / 2 + (data.position * 300); // scale
+
+    const x = canvas.width / 2 + data.position * 300; // scale
     const y = canvas.height / 2;
-  
+
     const intensity = Math.min(1, Math.abs(data.magnetometer.z) / 100);
-  
+
     // Draw base heat circle
     let color = 'rgba(0, 255, 0, 0.4)'; // empty = green
     if (isStud) color = 'rgba(255, 0, 0, 0.6)'; // stud = red
-  
+
     ctx.beginPath();
     ctx.arc(x, y, 8, 0, Math.PI * 2);
     ctx.fillStyle = color;
     ctx.fill();
-  
+
     // Optionally, add auto-highlight with a stronger visual
     if (isStud) {
       ctx.beginPath();
@@ -186,25 +195,20 @@ export class StudFinderPage implements AfterViewInit {
       ctx.stroke();
     }
   }
-  
-  
-  
+
   clearHeatmap() {
     const canvas = this.overlay.nativeElement;
     const ctx = canvas.getContext('2d');
     if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
-
-  // MACHINE LEARNING 
+  // MACHINE LEARNING
   trainingInProgress = false;
-  trainingStatus = '';  // to display the progress
+  trainingStatus = ''; // to display the progress
   trainingLoss: any[] = [];
   trainingAccuracy: any[] = [];
   validationLoss: any[] = [];
   validationAccuracy: any[] = [];
-  
-
 
   async prepareTrainingData() {
     const readings = await this.sensorStorage.getAllReadings();
@@ -214,11 +218,11 @@ export class StudFinderPage implements AfterViewInit {
     for (let data of readings) {
       const { magnetometer, rssi, position, label } = data;
       const feature = [
-        Math.abs(magnetometer.x), 
+        Math.abs(magnetometer.x),
         Math.abs(magnetometer.y),
         Math.abs(magnetometer.z),
         rssi ?? 0,
-        position
+        position,
       ];
       features.push(feature);
       labels.push(label === 'stud' ? 1 : 0); // 1 = stud, 0 = empty
@@ -237,20 +241,26 @@ export class StudFinderPage implements AfterViewInit {
 
     // Model architecture (can be expanded/changed based on testing)
     const model = tf.sequential();
-    model.add(tf.layers.dense({ units: 64, activation: 'relu', inputShape: [xs.shape[1]] }));
+    model.add(
+      tf.layers.dense({
+        units: 64,
+        activation: 'relu',
+        inputShape: [xs.shape[1]],
+      })
+    );
     model.add(tf.layers.dense({ units: 32, activation: 'relu' }));
     model.add(tf.layers.dense({ units: 1, activation: 'sigmoid' }));
 
     model.compile({
       optimizer: tf.train.adam(0.001),
       loss: 'binaryCrossentropy',
-      metrics: ['accuracy']
+      metrics: ['accuracy'],
     });
 
     const earlyStopping = tf.callbacks.earlyStopping({
       monitor: 'val_loss',
       patience: 5,
-      restoreBestWeights: false
+      restoreBestWeights: false,
     });
 
     // Training the model and capturing history
@@ -258,13 +268,12 @@ export class StudFinderPage implements AfterViewInit {
       epochs: 50,
       batchSize: 32,
       validationSplit: 0.2,
-      callbacks: [earlyStopping]
+      callbacks: [earlyStopping],
     });
-
 
     // Setting up the callbacks to track training progress
     // const historyCallback = tf.callbacks.history();
-    
+
     // // Training with early stopping and progress monitoring
     // const earlyStopping = tf.callbacks.earlyStopping({
     //   monitor: 'val_loss',
@@ -276,9 +285,7 @@ export class StudFinderPage implements AfterViewInit {
       epochs: 50,
       batchSize: 32,
       validationSplit: 0.2,
-      callbacks: [
-        earlyStopping
-      ]
+      callbacks: [earlyStopping],
     });
 
     // Store the trained model in localStorage for reuse
@@ -315,7 +322,7 @@ export class StudFinderPage implements AfterViewInit {
       Math.abs(magnetometer.y),
       Math.abs(magnetometer.z),
       rssi ?? 0,
-      position
+      position,
     ];
 
     const input = tf.tensor2d([features]);
@@ -368,7 +375,6 @@ Model Deployment: Once the model is optimized, deploy it to mobile for real-time
 
 Let me know how it goes, or if you'd like to adjust anything! Ready to test out the live training flow? 🚀
  */
-
 
 /*
 Model v2
